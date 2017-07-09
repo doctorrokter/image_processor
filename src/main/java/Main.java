@@ -1,4 +1,3 @@
-import org.im4java.process.ProcessStarter;
 import retrowavers.imageprocessor.services.Constants;
 import retrowavers.imageprocessor.services.ImageDownloader;
 import retrowavers.imageprocessor.services.ImageProcessor;
@@ -24,7 +23,7 @@ public class Main {
         ImageDownloader downloader = new ImageDownloader();
         ImageProcessor processor = new ImageProcessor();
 
-        get("/", (req, res) -> "Retrowavers image processor tool");
+        get("/", (req, res) -> "Image Processor");
 
         get("/blur/*/*", (req, res) -> {
 
