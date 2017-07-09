@@ -1,6 +1,11 @@
 # Image Processor
 Online image processor, currently supports <strong>ONLY</strong> blurring on the fly.
 
+
+<strong>Requirements</strong>:
+* ImageMagick should be installed on the machine. 
+* Also, if this is a Windows machine, a MAGICK_HOME environment variable should be set in the system.
+
 Gaussian Blur template:
 
 <pre>
