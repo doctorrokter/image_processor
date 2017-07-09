@@ -13,10 +13,12 @@ public class ImageProcessor {
     private ConvertCmd convert;
 
     public ImageProcessor() {
-        if (System.getProperty("os.name").toLowerCase().contains("windows") && !Util.blank(System.getenv("MAGICK_HOME"))) {
-            ProcessStarter.setGlobalSearchPath(System.getenv("MAGICK_HOME"));
-        } else {
-            throw new RuntimeException("MAGICK_HOME var should be specified!");
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            if (!Util.blank(System.getenv("MAGICK_HOME"))) {
+                ProcessStarter.setGlobalSearchPath(System.getenv("MAGICK_HOME"));
+            } else {
+                throw new RuntimeException("MAGICK_HOME var should be specified!");
+            }
         }
         convert = new ConvertCmd();
     }
