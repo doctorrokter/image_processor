@@ -1,4 +1,4 @@
-package retrowavers.imageprocessor.services;
+package app.services;
 
 
 import org.junit.Before;

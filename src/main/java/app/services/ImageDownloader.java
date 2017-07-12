@@ -1,4 +1,4 @@
-package retrowavers.imageprocessor.services;
+package app.services;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,11 +14,11 @@ public class ImageDownloader {
 
     public void download(String url, String destination, String filename) {
         try {
-            if (!Files.exists(Paths.get(destination))) {
-                Files.createDirectory(Paths.get(destination));
+            if (!Files.exists(Paths.get("./" + destination))) {
+                Files.createDirectories(Paths.get("./" + destination));
             }
 
-            if (Files.exists(Paths.get(destination + "/" + filename))) {
+            if (Files.exists(Paths.get("./" + destination + "/" + filename))) {
                 return;
             }
 
@@ -31,7 +31,7 @@ public class ImageDownloader {
             conn.setUseCaches(false);
             conn.connect();
 
-            Files.copy(conn.getInputStream(), Paths.get(destination + "/" + filename));
+            Files.copy(conn.getInputStream(), Paths.get("./" + destination + "/" + filename));
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();

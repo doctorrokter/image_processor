@@ -1,4 +1,4 @@
-package retrowavers.imageprocessor.services;
+package app.services;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class ImageProcessorSpec {
     public void should_blur_image() {
         a(Files.exists(path)).shouldBeFalse();
 
-        processor.blur(src.toString(), path.toString(), 65);
+        processor.blur("images", filename, "b_" + filename, 65);
         a(Files.exists(path)).shouldBeTrue();
     }
 }

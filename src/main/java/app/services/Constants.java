@@ -1,4 +1,4 @@
-package retrowavers.imageprocessor.services;
+package app.services;
 
 /**
  * Created by misha on 09-Jul-17.

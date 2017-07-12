@@ -1,15 +1,22 @@
-package retrowavers.imageprocessor.services;
+package app.services;
 
+import app.beans.Image;
+import app.store.Store;
+import com.google.inject.Inject;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.ProcessStarter;
 import org.javalite.common.Util;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created by misha on 09-Jul-17.
  */
 public class ImageProcessor {
 
+    @Inject private Store store;
     private ConvertCmd convert;
 
     public ImageProcessor() {
@@ -23,15 +30,19 @@ public class ImageProcessor {
         convert = new ConvertCmd();
     }
 
-    public void blur(String src, String destination, double radius) {
+    public Image blur(String path, String filename, String newFilename, double radius) {
         try {
             IMOperation operation = new IMOperation();
-            operation.addImage(src);
+            operation.addImage("./" + path + "/" + filename);
             operation.blur(0d, radius);
-            operation.addImage(destination);
+            operation.addImage("./" + path + "/" + newFilename);
             convert.run(operation);
+            Image image = new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
+            store.set(image);
+            return image;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
