@@ -50,10 +50,13 @@ public class BlurController {
             Image image = store.get(processDestination);
 
             if (image == null) {
+                logger.info("Image not found, will create a new one: " + processDestination);
                 downloader.download(url, path, filename);
                 image = processor.blur(path, filename, "b_" + filename, toDouble(req.splat()[0]));
                 Files.delete(Paths.get("." + processDestination));
                 Files.delete(Paths.get("." + path + "/" + filename));
+            } else {
+                logger.info("Image found in store: " + processDestination);
             }
 
             HttpServletResponse raw = res.raw();
