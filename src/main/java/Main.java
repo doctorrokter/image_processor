@@ -1,4 +1,5 @@
 import app.controllers.BlurController;
+import app.controllers.ResizeController;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import app.services.ImageProcessorModule;
@@ -20,7 +21,8 @@ public class Main {
 
         BlurController blurController = new BlurController();
         injector.injectMembers(blurController);
-        blurController.init();
 
+        ResizeController resizeController = new ResizeController();
+        injector.injectMembers(resizeController);
     }
 }

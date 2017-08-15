@@ -45,4 +45,20 @@ public class ImageProcessor {
         }
         return null;
     }
+
+    public Image resize(String path, String filename, String newFilename, int width, int height) {
+        try {
+            IMOperation operation = new IMOperation();
+            operation.addImage("./" + path + "/" + filename);
+            operation.resize(width, height);
+            operation.addImage("./" + path + "/" + newFilename);
+            convert.run(operation);
+            Image image = new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
+            store.set(image);
+            return image;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
