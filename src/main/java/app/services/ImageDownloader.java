@@ -1,5 +1,8 @@
 package app.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -10,10 +13,14 @@ import java.nio.file.Paths;
  */
 public class ImageDownloader {
 
-    private String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36";
+    private final String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36";
+    private static final Logger logger = LoggerFactory.getLogger(ImageDownloader.class);
+
 
     public void download(String url, String destination, String filename) {
         try {
+            logger.debug("Try to download an image: " + url);
+
             if (!Files.exists(Paths.get("./" + destination))) {
                 Files.createDirectories(Paths.get("./" + destination));
             }
@@ -34,7 +41,7 @@ public class ImageDownloader {
             Files.copy(conn.getInputStream(), Paths.get("./" + destination + "/" + filename));
             conn.disconnect();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error downloading an image", e);
         }
     }
 }
