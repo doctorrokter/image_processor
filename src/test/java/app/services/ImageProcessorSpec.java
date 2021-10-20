@@ -1,7 +1,7 @@
 package app.services;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +20,7 @@ public class ImageProcessorSpec {
     private Path src;
     private ImageProcessor processor;
 
-    @Before
+    @BeforeAll
     public void setUp() throws IOException {
         src = Paths.get(Constants.IMAGES + "/" + filename);
         path = Paths.get(Constants.IMAGES + "/b_" + filename);

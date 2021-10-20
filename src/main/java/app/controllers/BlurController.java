@@ -30,20 +30,15 @@ public class BlurController {
     public BlurController() {
         before("/blur/*/*", (req, res) -> {
             logger.info(req.url());
-            logger.info(asList(req.splat(), req.queryString()).toString());
+            logger.info(asList(req.splat()).toString());
         });
 
         get("/blur/*/*", (req, res) -> {
-
-            String url = req.splat()[1];
-            if (!url.startsWith("https") || !url.startsWith("http")) {
-                url = "http://" + url;
-            }
+            String url = ImageUrlParser.normalizeUrl(req.splat()[1]);
 
             if (req.queryString() != null) {
                 url += "?" + req.queryString();
             }
-
 
             logger.info("Image url::" + url);
 

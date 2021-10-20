@@ -50,4 +50,23 @@ public class ImageUrlParser {
 
         return result;
     }
+
+    public static String normalizeUrl(String url) {
+        String newUrl = url;
+
+        if (!newUrl.startsWith("https") || !newUrl.startsWith("http")) {
+            newUrl = "http://" + newUrl;
+        } else {
+            String[] parts = newUrl.split(":/");
+            String protocol = parts[0];
+            String path = parts[1];
+            if (path.startsWith("/")) {
+                path += path.replace("/", "");
+            }
+
+            newUrl = protocol + "://" + path;
+        }
+
+        return newUrl;
+    }
 }
