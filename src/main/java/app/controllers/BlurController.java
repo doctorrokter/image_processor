@@ -26,7 +26,7 @@ public class BlurController {
     @Inject private ImageProcessor processor;
     @Inject private Store store;
 
-    private static Logger logger = LoggerFactory.getLogger(BlurController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BlurController.class);
 
     public BlurController() {
         before("/blur/*/*", (req, res) -> {
@@ -37,7 +37,7 @@ public class BlurController {
         get("/blur/*/*", (req, res) -> {
 
             String url = req.splat()[1];
-            if (!url.startsWith("https") && !url.startsWith("http")) {
+            if (!url.startsWith("https") || !url.startsWith("http")) {
                 url = "http://" + url;
             }
 
@@ -53,6 +53,7 @@ public class BlurController {
                 logger.info("Image not found, will create a new one: " + processDestination);
                 downloader.download(url, path, filename);
                 image = processor.blur(path, filename, "b_" + filename, toDouble(req.splat()[0]));
+                store.set(image);
                 Files.delete(Paths.get("." + processDestination));
                 Files.delete(Paths.get("." + path + "/" + filename));
             } else {

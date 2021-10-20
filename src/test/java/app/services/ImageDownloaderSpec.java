@@ -35,5 +35,8 @@ public class ImageDownloaderSpec {
         id.download("http://retrowave.ru/artwork/c99d5d4a4951c230ded9d9ffec2c757f85593814.jpg", Constants.IMAGES, "c99d5d4a4951c230ded9d9ffec2c757f85593814.jpg");
 
         a(Files.exists(path)).shouldBeTrue();
+
+        id.download("https://retrowave.ru/artwork/c99d5d4a4951c230ded9d9ffec2c757f85593814.jpg", Constants.IMAGES, "c99d5d4a4951c230ded9d9ffec2c757f85593814.jpg");
+        a(Files.exists(path)).shouldBeTrue();
     }
 }

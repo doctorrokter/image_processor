@@ -35,7 +35,7 @@ public class ResizeController {
         get("/resize/*/*/*", (req, res) -> {
 
             String url = req.splat()[2];
-            if (!url.startsWith("https") && !url.startsWith("http")) {
+            if (!url.startsWith("https") || !url.startsWith("http")) {
                 url = "http://" + url;
             }
 
@@ -56,6 +56,7 @@ public class ResizeController {
                 image = processor.resize(path, filename, newFilename, width, height);
                 Files.delete(Paths.get("." + processDestination));
                 Files.delete(Paths.get("." + path + "/" + filename));
+                store.set(image);
             } else {
                 logger.info("Image found in store: " + processDestination);
             }

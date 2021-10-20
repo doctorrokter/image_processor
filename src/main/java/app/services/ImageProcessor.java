@@ -1,8 +1,6 @@
 package app.services;
 
 import app.beans.Image;
-import app.store.Store;
-import com.google.inject.Inject;
 import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.ProcessStarter;
@@ -16,7 +14,6 @@ import java.nio.file.Paths;
  */
 public class ImageProcessor {
 
-    @Inject private Store store;
     private ConvertCmd convert;
 
     public ImageProcessor() {
@@ -37,9 +34,7 @@ public class ImageProcessor {
             operation.blur(0d, radius);
             operation.addImage("./" + path + "/" + newFilename);
             convert.run(operation);
-            Image image = new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
-            store.set(image);
-            return image;
+            return new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,9 +48,7 @@ public class ImageProcessor {
             operation.resize(width, height);
             operation.addImage("./" + path + "/" + newFilename);
             convert.run(operation);
-            Image image = new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
-            store.set(image);
-            return image;
+            return new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
         } catch (Exception e) {
             e.printStackTrace();
         }
