@@ -52,8 +52,8 @@ public class BlurController {
 
             downloader.download(url, result.getDownloadDestination(), result.getFilename());
             image = processor.blur(result.getDownloadDestination(), result.getFilename(), radius);
-            Files.delete(Paths.get("." + result.getProcessDestination()));
-            Files.delete(Paths.get("." + result.getDownloadDestination()));
+//            Files.delete(Paths.get("." + result.getProcessDestination()));
+//            Files.delete(Paths.get("." + result.getDownloadDestination()));
 
             HttpServletResponse raw = res.raw();
             raw.getOutputStream().write(image.getBytes());

@@ -52,8 +52,8 @@ public class ResizeController {
 
             downloader.download(url, result.getDownloadDestination(), result.getFilename());
             image = processor.resize(result.getDownloadDestination(), result.getFilename(), width, height);
-            Files.delete(Paths.get("." + result.getProcessDestination()));
-            Files.delete(Paths.get("." + result.getDownloadDestination()));
+//            Files.delete(Paths.get("." + result.getProcessDestination()));
+//            Files.delete(Paths.get("." + result.getDownloadDestination()));
 
             HttpServletResponse raw = res.raw();
             raw.getOutputStream().write(image.getBytes());
