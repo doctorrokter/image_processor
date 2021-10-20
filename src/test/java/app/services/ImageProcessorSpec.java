@@ -1,7 +1,7 @@
 package app.services;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +20,7 @@ public class ImageProcessorSpec {
     private Path src;
     private ImageProcessor processor;
 
-    @Before
+    @BeforeAll
     public void setUp() throws IOException {
         src = Paths.get(Constants.IMAGES + "/" + filename);
         path = Paths.get(Constants.IMAGES + "/b_" + filename);
@@ -34,7 +34,7 @@ public class ImageProcessorSpec {
     public void should_blur_image() {
         a(Files.exists(path)).shouldBeFalse();
 
-        processor.blur("images", filename, "b_" + filename, 65);
+        processor.blur("images", filename, 65);
         a(Files.exists(path)).shouldBeTrue();
     }
 }

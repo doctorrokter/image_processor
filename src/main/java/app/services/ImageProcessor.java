@@ -5,6 +5,8 @@ import org.im4java.core.ConvertCmd;
 import org.im4java.core.IMOperation;
 import org.im4java.process.ProcessStarter;
 import org.javalite.common.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,6 +17,8 @@ import java.nio.file.Paths;
 public class ImageProcessor {
 
     private ConvertCmd convert;
+    private static final Logger logger = LoggerFactory.getLogger(ImageProcessor.class);
+
 
     public ImageProcessor() {
         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -27,8 +31,11 @@ public class ImageProcessor {
         convert = new ConvertCmd();
     }
 
-    public Image blur(String path, String filename, String newFilename, double radius) {
+    public Image blur(String path, String filename, double radius) {
+        String newFilename = "blur_" + filename;
+
         try {
+            logger.info("Blur image: " + path);
             IMOperation operation = new IMOperation();
             operation.addImage("./" + path + "/" + filename);
             operation.blur(0d, radius);
@@ -36,13 +43,17 @@ public class ImageProcessor {
             convert.run(operation);
             return new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error blurring image", e);
         }
+
         return null;
     }
 
-    public Image resize(String path, String filename, String newFilename, int width, int height) {
+    public Image resize(String path, String filename, int width, int height) {
+        String newFilename = "resize_" + width + "_" + height + "_" + filename;
+
         try {
+            logger.info("Resize image: " + path);
             IMOperation operation = new IMOperation();
             operation.addImage("./" + path + "/" + filename);
             operation.resize(width, height);
@@ -50,8 +61,9 @@ public class ImageProcessor {
             convert.run(operation);
             return new Image(path, newFilename, Files.readAllBytes(Paths.get("./" + path + "/" + newFilename)));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error blurring image", e);
         }
+
         return null;
     }
 }

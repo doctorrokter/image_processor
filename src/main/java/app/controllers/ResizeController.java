@@ -3,7 +3,7 @@ package app.controllers;
 import app.beans.Image;
 import app.services.ImageDownloader;
 import app.services.ImageProcessor;
-import app.store.Store;
+import app.util.ImageUrlParser;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,6 @@ public class ResizeController {
     @Inject
     private ImageDownloader downloader;
     @Inject private ImageProcessor processor;
-    @Inject private Store store;
 
     private static Logger logger = LoggerFactory.getLogger(ResizeController.class);
 
@@ -33,33 +32,28 @@ public class ResizeController {
         });
 
         get("/resize/*/*/*", (req, res) -> {
+            String url = ImageUrlParser.normalizeUrl(req.splat()[1]);
 
-            String url = req.splat()[2];
-            if (!url.startsWith("https") || !url.startsWith("http")) {
-                url = "http://" + url;
+            if (req.queryString() != null) {
+                url += "?" + req.queryString();
             }
 
-            String[] parts = url.split("/");
-            String filename = parts[parts.length - 1];
-            String path = url.split(":/")[1].replace("/" + filename, "");
+            logger.info("Image url::" + url);
 
             int width = toInteger(req.splat()[0]);
             int height = toInteger(req.splat()[1]);
-            String newFilename = "resize_" + width + "_" + height + "_" + filename;
-            String processDestination = path + "/" + newFilename;
 
-            Image image = store.get(processDestination);
+            String action = "resize";
+            ImageUrlParser.ParsedRemoteImageUrl result = ImageUrlParser.parse(url, action);
 
-            if (image == null) {
-                logger.info("Image not found, will create a new one: " + processDestination);
-                downloader.download(url, path, filename);
-                image = processor.resize(path, filename, newFilename, width, height);
-                Files.delete(Paths.get("." + processDestination));
-                Files.delete(Paths.get("." + path + "/" + filename));
-                store.set(image);
-            } else {
-                logger.info("Image found in store: " + processDestination);
-            }
+            logger.info(result.toString());
+
+            Image image = null;
+
+            downloader.download(url, result.getDownloadDestination(), result.getFilename());
+            image = processor.resize(result.getDownloadDestination(), result.getFilename(), width, height);
+//            Files.delete(Paths.get("." + result.getProcessDestination()));
+//            Files.delete(Paths.get("." + result.getDownloadDestination()));
 
             HttpServletResponse raw = res.raw();
             raw.getOutputStream().write(image.getBytes());

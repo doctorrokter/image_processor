@@ -3,7 +3,7 @@ package app.controllers;
 import app.beans.Image;
 import app.services.ImageDownloader;
 import app.services.ImageProcessor;
-import app.store.Store;
+import app.util.ImageUrlParser;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,6 @@ public class BlurController {
 
     @Inject private ImageDownloader downloader;
     @Inject private ImageProcessor processor;
-    @Inject private Store store;
 
     private static final Logger logger = LoggerFactory.getLogger(BlurController.class);
 
@@ -35,30 +34,26 @@ public class BlurController {
         });
 
         get("/blur/*/*", (req, res) -> {
+            String url = ImageUrlParser.normalizeUrl(req.splat()[1]);
 
-            String url = req.splat()[1];
-            if (!url.startsWith("https") || !url.startsWith("http")) {
-                url = "http://" + url;
+            if (req.queryString() != null) {
+                url += "?" + req.queryString();
             }
 
-            String[] parts = url.split("/");
-            String filename = parts[parts.length - 1];
-            String path = url.split(":/")[1].replace("/" + filename, "");
+            logger.info("Image url::" + url);
 
-            String processDestination = path + "/b_" + filename;
+            Double radius = toDouble(req.splat()[0]);
+            String action = "blur";
+            ImageUrlParser.ParsedRemoteImageUrl result = ImageUrlParser.parse(url, action);
 
-            Image image = store.get(processDestination);
+            logger.info(result.toString());
 
-            if (image == null) {
-                logger.info("Image not found, will create a new one: " + processDestination);
-                downloader.download(url, path, filename);
-                image = processor.blur(path, filename, "b_" + filename, toDouble(req.splat()[0]));
-                store.set(image);
-                Files.delete(Paths.get("." + processDestination));
-                Files.delete(Paths.get("." + path + "/" + filename));
-            } else {
-                logger.info("Image found in store: " + processDestination);
-            }
+            Image image = null;
+
+            downloader.download(url, result.getDownloadDestination(), result.getFilename());
+            image = processor.blur(result.getDownloadDestination(), result.getFilename(), radius);
+//            Files.delete(Paths.get("." + result.getProcessDestination()));
+//            Files.delete(Paths.get("." + result.getDownloadDestination()));
 
             HttpServletResponse raw = res.raw();
             raw.getOutputStream().write(image.getBytes());

@@ -1,8 +1,8 @@
 package app.services;
 
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +19,7 @@ public class ImageDownloaderSpec {
     private String filename = "c99d5d4a4951c230ded9d9ffec2c757f85593814.jpg";
     private Path path;
 
-    @Before
+    @BeforeAll
     public void setUp() throws IOException {
         path = Paths.get(Constants.IMAGES + "/" + filename);
         if (Files.exists(path)) {
