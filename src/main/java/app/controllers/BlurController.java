@@ -40,13 +40,13 @@ public class BlurController {
                 url = "http://" + url;
             }
 
-            logger.debug("Image url::" + url);
+            logger.info("Image url::" + url);
 
             Double radius = toDouble(req.splat()[0]);
             String action = "blur";
             ImageUrlParser.ParsedRemoteImageUrl result = ImageUrlParser.parse(url, action);
 
-            logger.debug(result.toString());
+            logger.info(result.toString());
 
             Image image = null;
 

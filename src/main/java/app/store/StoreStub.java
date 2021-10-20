@@ -9,17 +9,17 @@ public class StoreStub implements Store {
     private static final Logger logger = LoggerFactory.getLogger(StoreStub.class);
 
     public StoreStub() {
-        logger.debug("Initialize stub for storing images");
+        logger.info("Initialize stub for storing images");
     }
 
     @Override
     public Image get(String path) {
-        logger.debug("get image::" + path);
+        logger.info("get image::" + path);
         return null;
     }
 
     @Override
     public void set(Image image) {
-        logger.debug("store image::" + image.getName());
+        logger.info("store image::" + image.getName());
     }
 }

@@ -38,7 +38,7 @@ public class ResizeController {
                 url = "http://" + url;
             }
 
-            logger.debug("Image url::" + url);
+            logger.info("Image url::" + url);
 
             int width = toInteger(req.splat()[0]);
             int height = toInteger(req.splat()[1]);
@@ -46,7 +46,7 @@ public class ResizeController {
             String action = "resize";
             ImageUrlParser.ParsedRemoteImageUrl result = ImageUrlParser.parse(url, action);
 
-            logger.debug(result.toString());
+            logger.info(result.toString());
 
             Image image = null;
 

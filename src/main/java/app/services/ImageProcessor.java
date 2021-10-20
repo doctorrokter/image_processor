@@ -35,7 +35,7 @@ public class ImageProcessor {
         String newFilename = "blur_" + filename;
 
         try {
-            logger.debug("Blur image: " + path);
+            logger.info("Blur image: " + path);
             IMOperation operation = new IMOperation();
             operation.addImage("./" + path + "/" + filename);
             operation.blur(0d, radius);
@@ -53,7 +53,7 @@ public class ImageProcessor {
         String newFilename = "resize_" + width + "_" + height + "_" + filename;
 
         try {
-            logger.debug("Resize image: " + path);
+            logger.info("Resize image: " + path);
             IMOperation operation = new IMOperation();
             operation.addImage("./" + path + "/" + filename);
             operation.resize(width, height);

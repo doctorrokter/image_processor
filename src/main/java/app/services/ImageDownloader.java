@@ -19,7 +19,7 @@ public class ImageDownloader {
 
     public void download(String url, String destination, String filename) {
         try {
-            logger.debug("Try to download an image: " + url);
+            logger.info("Try to download an image: " + url);
 
             if (!Files.exists(Paths.get("./" + destination))) {
                 Files.createDirectories(Paths.get("./" + destination));
