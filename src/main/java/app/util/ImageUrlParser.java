@@ -60,8 +60,9 @@ public class ImageUrlParser {
             String[] parts = newUrl.split(":/");
             String protocol = parts[0];
             String path = parts[1];
+
             if (path.startsWith("/")) {
-                path += path.replace("/", "");
+                path = path.substring(1);
             }
 
             newUrl = protocol + "://" + path;
