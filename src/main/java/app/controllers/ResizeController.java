@@ -28,7 +28,7 @@ public class ResizeController {
     public ResizeController() {
         before("/resize/*/*/*", (req, res) -> {
             logger.info(req.url());
-            logger.info(asList(req.splat()).toString());
+            logger.info(asList(req.splat(), req.queryString()).toString());
         });
 
         get("/resize/*/*/*", (req, res) -> {
@@ -36,6 +36,10 @@ public class ResizeController {
             String url = req.splat()[2];
             if (!url.startsWith("https") || !url.startsWith("http")) {
                 url = "http://" + url;
+            }
+
+            if (req.queryString() != null) {
+                url += "?" + req.queryString();
             }
 
             logger.info("Image url::" + url);
